@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+}
+@using Multilingual1.Models.ViewModels
+@model PageLanguageLogsVM
+
+
+<title>版本與語言設定</title>
+<style>
+    .container {
+        max-width: 400px;
+        border: 1px solid #ccc;
+        padding: 50px;
+        border-radius: 8px;
+    }
+
+    .section {
+        margin-bottom: 30px;
+        font-size: 24px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+
+<div class="container">
+    <div class="section">
+        <p>目前是 <strong>@Model.CurrentVersion</strong> 版</p>
+    </div>
+
+    <hr>
+
+    <!-- 語言設定區塊 -->
+    <div class="">
+        <label for="language-select">設定語言：</label>
+        <select id="language-select">
+            <option value="zh-TW">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">韓文</option>
+        </select>
+
+        <button type="button" onclick="saveSettings()">儲存</button>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    function saveSettings() {
+        //var lang = $('#language-select').val();
+        var langText = $('#language-select').find('option:selected').text();
+
+        $.post('@Url.Action("SavePageLanguageLogs", "Home")', { languageName: langText }, function (data) {
+            if (data && data.ok) {
+                alert('設定已儲存！語言：' + langText);
+            }
+        }, 'json').fail(function (xhr) {
+            alert('儲存失敗：' + (xhr.responseText || xhr.statusText));
+        });
+    }
+</script>
