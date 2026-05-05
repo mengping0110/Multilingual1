@@ -48,7 +48,7 @@
 
 <div class="container">
     <div class="section">
-        <p>目前是 <strong>@Model.CurrentVersion</strong> 版</p>
+        <p>目前是 <strong id="current-version">@Model.CurrentVersion</strong> 版</p>
     </div>
 
     <hr>
@@ -74,7 +74,9 @@
 
         $.post('@Url.Action("SavePageLanguageLogs", "Home")', { languageName: langText }, function (data) {
             if (data && data.ok) {
-                alert('設定已儲存！語言：' + langText);
+                var display = (data.currentVersion != null && data.currentVersion !== '') ? data.currentVersion : langText;
+                $('#current-version').text(display);
+                alert('設定已儲存！語言：' + display);
             }
         }, 'json').fail(function (xhr) {
             alert('儲存失敗：' + (xhr.responseText || xhr.statusText));

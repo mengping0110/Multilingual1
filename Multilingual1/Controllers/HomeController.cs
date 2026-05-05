@@ -39,7 +39,11 @@ namespace Multilingual1.Controllers
             try
             {
                 _PageLanguageLogsBL.SaveLanguageChoice(languageName);
-                return Json(new { ok = true });
+                return Json(new
+                {
+                    ok = true,
+                    currentVersion = _PageLanguageLogsBL.GetCurrentLanguage(),
+                });
             }
             catch (Exception ex)
             {
